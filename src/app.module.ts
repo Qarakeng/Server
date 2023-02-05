@@ -1,10 +1,21 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import type { RedisClientOptions } from 'redis';
+import { CacheModule, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config'; 
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { TypeOrmConfig } from './config/typeorm.config';
+import { RedisModule } from './redis/redis.module';
+const redisStore = require("cache-manager-redis-store");
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    TypeOrmModule.forRoot(TypeOrmConfig),
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+    }),
+    CacheModule.register(),
+    AuthModule,
+
+  ],
 })
 export class AppModule {}
