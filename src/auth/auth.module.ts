@@ -4,12 +4,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 
-import { Users } from 'src/utils/typeorm';
+import { User } from 'src/utils/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { JwtStrategy } from './util/jwt-strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Users]),
+    TypeOrmModule.forFeature([User]),
     CacheModule.register(),
     ConfigModule.forRoot({
       envFilePath: ['.env'],
@@ -22,6 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService, JwtStrategy],
+  exports: [JwtStrategy],
 })
 export class AuthModule {}

@@ -1,8 +1,9 @@
-import { BaseEntity, Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
 import { Min, Max, IsEmail } from 'class-validator';
+import { Messages } from './messages';
 
 @Entity('Users')
-export class Users extends BaseEntity {
+export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
     
@@ -11,7 +12,7 @@ export class Users extends BaseEntity {
     @Max(15)
     username: string;
 
-    @Column()
+    @Column({ nullable: true })
     first_name: string;
     
     @Column({ nullable: true})
@@ -25,5 +26,11 @@ export class Users extends BaseEntity {
     @IsEmail()
     email: string
 
+    @Column({ nullable: true})
+    avatar: string;
+
+
+    // @OneToMany(( ) => Messages, (message) => message.author)
+    // messages: Messages[]
 
 }

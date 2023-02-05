@@ -4,7 +4,7 @@ import {Cache} from 'cache-manager';
 import { v4 as uuidv4 } from 'uuid';
 import { JwtService } from '@nestjs/jwt';
 import SendMailer from 'src/utils/nodemailer';
-import { Users } from 'src/utils/typeorm';
+import { User } from 'src/utils/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { ApiRes } from 'src/utils/payloadRes';
@@ -13,8 +13,8 @@ import { JwtPayload } from './util/jwt.payload';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Users) 
-    private readonly usersRepository: Repository<Users>,
+    @InjectRepository(User) 
+    private readonly usersRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private jwtService: JwtService
   ) {}

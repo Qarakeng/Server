@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmConfig } from './config/typeorm.config';
 import { RedisModule } from './redis/redis.module';
+import { UserModule } from './user/user.module';
 const redisStore = require("cache-manager-redis-store");
 
 @Module({
@@ -15,6 +16,7 @@ const redisStore = require("cache-manager-redis-store");
     }),
     CacheModule.register(),
     AuthModule,
+    UserModule,
 
   ],
 })

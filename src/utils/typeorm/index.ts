@@ -1,10 +1,17 @@
-import { Users } from './entities/Users'
+import { Convertions } from './entities/convertions';
+import { Messages } from './entities/messages';
+import { User } from './entities/Users'
+
 const entities = [
-    Users
+    User,
+    Messages,
+    Convertions
 ];
 
 export default entities;
 
 export{
-    Users
+    User,
+    Messages,
+    Convertions
 }
