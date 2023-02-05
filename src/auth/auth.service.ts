@@ -1,20 +1,22 @@
-import { CACHE_MANAGER, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Cache} from 'cache-manager';
 import { v4 as uuidv4 } from 'uuid';
+import { JwtService } from '@nestjs/jwt';
 import SendMailer from 'src/utils/nodemailer';
 import { Users } from 'src/utils/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ApiRes } from 'src/utils/payloadRes';
+import { JwtPayload } from './util/jwt.payload';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(Users) 
     private readonly usersRepository: Repository<Users>,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private jwtService: JwtService
   ) {}
 
   async login(createAuthDto: CreateAuthDto) {
@@ -23,43 +25,35 @@ export class AuthService {
     if (cachData == null){
       const randomCode: number = Math.floor(Math.random() * (99999 - 10000 + 1) + 10000);
       await SendMailer(email, randomCode);
-      await this.cacheManager.set(email, { first_name: uuidv4(), email, code: randomCode }, { ttl: 60 });
+      await this.cacheManager.set(email, { first_name: uuidv4(), email, code: randomCode }, { ttl: 90 });
       return ApiRes('code sent', HttpStatus.OK);
     }
-    return ApiRes('code was sent 60s time', HttpStatus.BAD_REQUEST);
+    return ApiRes('code was sent 90s time', HttpStatus.BAD_REQUEST);
   }
 
   async checkCode(query: any) {
-    console.log(query)
     const {email, code } = query
     const cachData: any =  await this.cacheManager.get(email) || null;
     if (cachData == null) {
       return ApiRes('code entry timed out!', HttpStatus.REQUEST_TIMEOUT);
     }
     if (Number(code) == Number(cachData['code'])){
-      const userFind = await this.usersRepository.findOneBy({ email });
+      const userFind = await this.usersRepository.findOneBy({ email }) || null;
       if (!userFind){
         const newUser =  this.usersRepository.create({
           first_name: cachData['first_name'],
           email: cachData['email']
         });
-        await newUser.save();
+        const data = await newUser.save();
+        const payload: JwtPayload = { user_id: data.id, email }
+        const accessToken: string = this.jwtService.sign(payload);
+        return ApiRes('created accound', HttpStatus.OK, { accessToken });
       }
-      return ApiRes('created accound', HttpStatus.OK, userFind);
+      const payload: JwtPayload = { user_id: userFind.id, email }
+      const accessToken: string = this.jwtService.sign(payload);
+      return ApiRes('created accound', HttpStatus.OK, { accessToken });
     } else {
       return ApiRes('The entered code is incorrect', HttpStatus.FORBIDDEN);
     }
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
   }
 }
