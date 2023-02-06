@@ -30,7 +30,7 @@ export class User extends BaseEntity {
     avatar: string;
 
 
-    // @OneToMany(( ) => Messages, (message) => message.author)
-    // messages: Messages[]
+    @OneToMany(() => Messages, (message) => message.author)
+    messages: Messages[]
 
 }

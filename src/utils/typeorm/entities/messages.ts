@@ -14,6 +14,9 @@ export class Messages extends BaseEntity {
     @JoinColumn()
     author: User;
 
+    @Column({ nullable: true, select: false })
+    authorId: User['id']
+
     @OneToOne(() => User, { createForeignKeyConstraints: false })
     @JoinColumn()
     recipient: User;

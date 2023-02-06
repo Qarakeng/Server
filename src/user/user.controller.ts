@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -12,9 +12,14 @@ import { User } from 'src/utils/typeorm';
 export class UserController { 
   constructor(private readonly userService: UserService) {}
 
-  @Get('profile')
-  Profile (@Req() req) {
-    return req.user;
+  // @Get('profile')
+  // Profile (@Req() req) {
+  //   return req.user;
+  // }
+
+  @Get('friends')
+  async MyFriends (@GetUser() user: User) {
+    return await this.userService.myFriends(user);
   }
 
   @Post('sendMessage')
@@ -22,9 +27,14 @@ export class UserController {
     return this.userService.create(createUserDto, user);
   }
 
+  @Get()
+  async Search(@Query() query) {
+    return await this.userService.SearchUser(query['search']);
+  }
+
   @Get(':chatId')
-  InChat(@Param('chatId') chatId: number, @GetUser() user: User) {
-    return this.userService.findAll(chatId, user)
+  async InChat(@Param('chatId') chatId: number, @GetUser() user: User) {
+    return await this.userService.findAll(chatId, user)
   }
 }
 

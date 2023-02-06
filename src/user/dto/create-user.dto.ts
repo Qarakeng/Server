@@ -9,5 +9,6 @@ export class CreateUserDto {
     author: any;
 
     @IsNumber()
-    recaption: User;
+    recaption: number;
 }
+ 
