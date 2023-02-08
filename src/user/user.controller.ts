@@ -24,7 +24,14 @@ export class UserController {
   @Patch('profile/update')
   async UpdateProfile (@GetUser() user: User, @Body() dto: UpdateProfileDto) {
     return await this.userService.updateProfile(user, dto);
+  } 
+
+  @Get('profile/update')
+  async GetProfile (@GetUser() user: User) {
+    return await this.userService.myProfile(user);
   }
+
+
 
   @Get()
   async Search(@Query() query) {

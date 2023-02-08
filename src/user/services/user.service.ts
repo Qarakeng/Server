@@ -14,6 +14,11 @@ export class UserService {
     @InjectRepository(User) 
     private readonly UserRepository: Repository<User>
   ) {}
+
+  async myProfile (user: User) {
+    const getProfile = await this.UserRepository.findOneBy({ id: user['id'] });
+    return ApiRes('Find Profile', HttpStatus.OK, getProfile);
+  }
   
   async updateProfile (user: User, dto: UpdateProfileDto) {
     const data = await this.UserRepository.update(user['id'], dto);
