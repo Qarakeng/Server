@@ -22,5 +22,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         server: ftp.kvartirabar.uz
-        username: backend@kvartirabar.uz
+        username: backend@api.kvartirabar.uz
         password: ${{ secrets.PASSWORD }}
