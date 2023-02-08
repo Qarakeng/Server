@@ -1,11 +1,11 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./Users";
 
 
 @Entity('Messages')
 export class Messages extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    public id: number;
 
     @Column()
     context: string;
@@ -23,6 +23,10 @@ export class Messages extends BaseEntity {
 
     @Column({ nullable: true, select: false })
     recipientId: User['id'];
+
+    @OneToOne(() => Messages, { nullable: true })
+    @JoinColumn()
+    isReply: Messages;
 
     @CreateDateColumn({ name: 'created_at'}) 
     createdAt: Date;

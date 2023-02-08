@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
 import { Min, Max, IsEmail } from 'class-validator';
 import { Messages } from './messages';
 
@@ -30,7 +30,6 @@ export class User extends BaseEntity {
     avatar: string;
 
 
-    @OneToMany(() => Messages, (message) => message.author)
-    messages: Messages[]
-
+    @CreateDateColumn({ name: 'created_at'}) 
+    createdAt: Date;
 }
