@@ -42,8 +42,8 @@ export class ChatService {
         author: true
       },
         where: [
-            { authorId: user['id'], recipientId: recaptionId },
-            { authorId: recaptionId, recipientId: user['id'] }
+            { authorId: user['id'], recipientId: parseInt(recaptionId) },
+            { authorId: parseInt(recaptionId), recipientId: user['id'] }
         ],
         order: { 'createdAt': 'DESC' },
         take: 30,
