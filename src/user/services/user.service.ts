@@ -4,7 +4,7 @@ import { ApiRes } from 'src/utils/payloadRes';
 import { Messages, User } from 'src/utils/typeorm';
 import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UpdateProfileDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -14,8 +14,12 @@ export class UserService {
     @InjectRepository(User) 
     private readonly UserRepository: Repository<User>
   ) {}
-
- 
+  
+  async updateProfile (user: User, dto: UpdateProfileDto) {
+    const data = await this.UserRepository.update(user['id'], dto);
+    console.log(data);
+  }
+  
   async myFriends  (_user: User) {
     const user = _user.id;
     console.log('hjk')

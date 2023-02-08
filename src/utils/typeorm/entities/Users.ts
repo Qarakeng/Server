@@ -1,5 +1,5 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
-import { Min, Max, IsEmail } from 'class-validator';
+import { Min, Max, IsEmail, MinLength, MaxLength } from 'class-validator';
 import { Messages } from './messages';
 
 @Entity('Users')
@@ -8,8 +8,8 @@ export class User extends BaseEntity {
     id: number;
     
     @Column({ unique: true, nullable: true })
-    @Min(5)
-    @Max(15)
+    @MinLength(5)
+    @MaxLength(15)
     username: string;
 
     @Column({ nullable: true })
@@ -19,7 +19,8 @@ export class User extends BaseEntity {
     last_name: string;
 
     @Column({ nullable: true })
-    @Max(52)
+    @MinLength(0)
+    @MaxLength(52)
     bio: string
 
     @Column({ nullable: true, unique: true })

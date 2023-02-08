@@ -5,7 +5,6 @@ import { Messages, User } from 'src/utils/typeorm';
 import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateMessageDto } from '../dto/message/update.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
 
 @Injectable()
 export class ChatService {
