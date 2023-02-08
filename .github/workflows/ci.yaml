@@ -23,4 +23,4 @@ jobs:
       with:
         server: ftp.kvartirabar.uz
         username: backend@kvartirabar.uz
-        password: ${{ secrets.PASSWORD }}
+        password: XLij?{q2#u89
