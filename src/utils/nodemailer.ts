@@ -38,5 +38,4 @@ let SendMailer = async (to: string, randomCode: number) => {
     ); 
   })
 }; 
-SendMailer('azizbekcoderuz@gmail.com', 13223);
 export default SendMailer;
