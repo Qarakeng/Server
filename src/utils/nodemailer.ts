@@ -11,7 +11,7 @@ let transporter = nodemailer.createTransport({
   logger: true,
   debug: true,
   ignoreTLS: true,
-  auth: {
+  auth: { 
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
   },
