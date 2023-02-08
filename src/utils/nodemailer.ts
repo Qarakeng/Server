@@ -1,10 +1,13 @@
 const nodemailer = require("nodemailer");
+import * as dotenv from 'dotenv';
+dotenv.config();
 
+console.log(process.env.SMTP_USER)
 let transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: process.env.SMTP_SERVICE,
   auth: {
-    user: "arzustartup@gmail.com",
-    pass: "gccrcpdlljwndebo",
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
   },
 });
 
@@ -12,7 +15,7 @@ let SendMailer = async (to: string, randomCode: number) => {
   return new Promise((resolve, reject) => {
     transporter.sendMail(
       {
-        from: "ArzuStartUP@gmail.com",
+        from: process.env.SMTP_USER,
         to, // to user
         subject: "[Arzu] Verify code",
         text: "",
