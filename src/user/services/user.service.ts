@@ -42,6 +42,8 @@ export class UserService {
     .addGroupBy('msg.authorId')
     .orderBy('msg.created_at', 'DESC')
     .getRawMany()
+
+    if (friednds.length == 0) return ApiRes('NotFound', HttpStatus.NOT_FOUND);
     
     return ApiRes('My Friends', HttpStatus.OK, friednds);
   }

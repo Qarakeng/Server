@@ -26,12 +26,10 @@ export class UserController {
     return await this.userService.updateProfile(user, dto);
   } 
 
-  @Get('profile/update')
+  @Get('profile')
   async GetProfile (@GetUser() user: User) {
     return await this.userService.myProfile(user);
   }
-
-
 
   @Get()
   async Search(@Query() query) {
